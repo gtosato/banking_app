@@ -10,15 +10,27 @@ const DoughnutChart = ({ accounts }: DoughnutChartProps) => {
     const data = {
         datasets: [
             {
-                label: 'Banks',
+                label: 'Bank',
                 data: [1250, 2500, 3750],
                 backgroundColor: ['#0747b6', '#2265d8', '#2f91fa']
             }
         ],
-        labels: ['Westpac', 'NAB', 'ANZ']
+        labels: ['ANZ', 'Commonwealth', 'NAB']
     } 
 
-    return <Doughnut data={data} />
+    return <Doughnut
+        data={data}
+        options={{
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }}
+    
+    
+    />
 }
 
 export default DoughnutChart
