@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { it } from 'node:test'
 import React from 'react'
 
 const Sidebar = ({ user }: SiderbarProps) => {
@@ -37,7 +38,21 @@ const Sidebar = ({ user }: SiderbarProps) => {
                               'bg-bank-gradient': isActive
                           })}
                       >
-                          {item.label}
+                          <div
+                            className='relative size-6'
+                          >
+                              <Image
+                                src={item.imgURL}
+                                  alt={item.label}
+                                  fill
+                                  className={cn({
+                                      'brightness-[3] invert-0' : isActive
+                                  })}
+                                />
+                          </div>
+                          <p className={cn('sidebar-label', { "!text-white": isActive})}>
+                            {item.label}
+                          </p>
                       </Link>
                   )
               })}
