@@ -1,18 +1,20 @@
-// src/server/appwrite.js
+// src/lib/server/appwrite.js
+"use server";
+import { Client, Account, Databases, Users } from "node-appwrite";
+import { cookies } from "next/headers";
 
-import { Client, Account } from "node-appwrite";
-
-// The name of your cookie that will store the session
-export const SESSION_COOKIE = "my-custom-session";
-
-// Admin client, used to create new accounts
-export function createAdminClient() {
+export async function createSessionClient() {
   const client = new Client()
-    .setEndpoint(import.meta.env.PUBLIC_APPWRITE_ENDPOINT)
-    .setProject(import.meta.env.PUBLIC_APPWRITE_PROJECT)
-    .setKey(import.meta.env.APPWRITE_KEY); // Set the API key here!
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
 
-  // Return the services you need
+  const session = cookies().get("appwrite-session");
+  if (!session || !session.value) {
+    throw new Error("No session");
+  }
+
+  client.setSession(session.value);
+
   return {
     get account() {
       return new Account(client);
@@ -20,35 +22,23 @@ export function createAdminClient() {
   };
 }
 
-// Session client, used to make requests on behalf of the logged in user
-export function createSessionClient(request) {
+export async function createAdminClient() {
   const client = new Client()
-    .setEndpoint(import.meta.env.PUBLIC_APPWRITE_ENDPOINT)
-    .setProject(import.meta.env.PUBLIC_APPWRITE_PROJECT);
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
+    .setKey(process.env.NEXT_APPWRITE_KEY!);
 
-  // Get the session cookie from the request and set the session
-  const cookies = parseCookies(request.headers.get("cookie") ?? "");
-  const session = cookies.get(SESSION_COOKIE);
-  if (!session) {
-    throw new Error("Session cookie not found");
-  }
-
-  client.setSession(session);
-
-  // Return the services you need
   return {
     get account() {
       return new Account(client);
     },
-  };
-}
 
-// Helper function to parse cookies
-function parseCookies(cookies) {
-  const map = new Map();
-  for (const cookie of cookies.split(";")) {
-    const [name, value] = cookie.split("=");
-    map.set(name.trim(), value ?? null);
-  }
-  return map;
+    get database() {
+      return new Databases(client)
+    },
+
+    get user() {
+      return new Users(client)
+    }
+  };
 }
