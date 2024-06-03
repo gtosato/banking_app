@@ -11,10 +11,12 @@ export default function RootLayout({
       <div className="auth-asset">
         <div>
           <Image
+            className="w-auto"
             src="/icons/auth-image.svg"
             alt="Auth image"
             width={500}
             height={500}
+
           />
         </div>
       </div>

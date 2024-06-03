@@ -57,7 +57,7 @@ const AuthForm = ({ type }: { type: string }) => {
                     password: data.password,
                 })
                 
-                if(response) router.push('/')
+                if (response) router.push('/')
             }
 
         } catch (error) {
@@ -102,23 +102,23 @@ const AuthForm = ({ type }: { type: string }) => {
                     {type === 'sign-up' && 
                         <>
                             <div className='flex gap-4'>
-                                <CustomInput control={form.control} name='firstName' label='First Name' placeholder='Enter your first name' />    
-                                <CustomInput control={form.control} name='lastName' label='Last Name' placeholder='Enter your last name' />    
+                                <CustomInput id='firstName' control={form.control} name='firstName' label='First Name' placeholder='Enter your first name' />    
+                                <CustomInput id='lastName' control={form.control} name='lastName' label='Last Name' placeholder='Enter your last name' />    
                             </div>
-                            <CustomInput control={form.control} name='address1' label='Address' placeholder='Enter your specific address' />    
-                            <CustomInput control={form.control} name='city' label='City' placeholder='Enter your city' />    
+                            <CustomInput id='address1' control={form.control} name='address1' label='Address' placeholder='Enter your specific address' />    
+                            <CustomInput id='city' control={form.control} name='city' label='City' placeholder='Enter your city' />    
                             <div className='flex gap-4'>
-                                <CustomInput control={form.control} name='state' label='State' placeholder='Example: NSW' />    
-                                <CustomInput control={form.control} name='postalCode' label='Postal Code' placeholder='Example: 2000' />                                
+                                <CustomInput id='state' control={form.control} name='state' label='State' placeholder='Example: NSW' />    
+                                <CustomInput id='postalCode' control={form.control} name='postalCode' label='Postal Code' placeholder='Example: 2000' />                                
                             </div>
                             <div className='flex gap-4'>
-                                <CustomInput control={form.control} name='dateOfBirth' label='Date of Birth' placeholder='DD/MM/YYYY' />    
-                                <CustomInput control={form.control} name='taxFileNumber' label='Tax File Number' placeholder='Example: 123456' />                                      
+                                <CustomInput id='dateOfBirth' control={form.control} name='dateOfBirth' label='Date of Birth' placeholder='DD/MM/YYYY' />    
+                                <CustomInput id='taxFileNumber' control={form.control} name='taxFileNumber' label='Tax File Number' placeholder='Example: 123456' />                                      
                             </div>
                         </>
                     }
-                    <CustomInput control={form.control} name='email' label='Email' placeholder='Enter your email' />
-                    <CustomInput control={form.control}  name='password' label='Password' placeholder='Enter your password' />
+                    <CustomInput id='email' control={form.control} name='email' label='Email' placeholder='Enter your email' />
+                    <CustomInput id='password' control={form.control}  name='password' label='Password' placeholder='Enter your password' />
                                                   
                     <div className='flex flex-col gap-4'>
                         <Button type="submit" className='form-btn' disabled={isLoading}>
