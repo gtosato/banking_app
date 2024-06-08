@@ -8,7 +8,7 @@ import { CountryCode, ProcessorTokenCreateRequest, ProcessorTokenCreateRequestPr
 import { plaidClient } from "@/lib/plaid"
 import { AwardIcon, Car } from "lucide-react"
 import { revalidatePath } from "next/cache"
-import { addFundingSource } from "./dwolla.actions"
+import { addFundingSource, createDwollaCustomer } from "./dwolla.actions"
 
 const {
     APPWRITE_DATABASE_ID: DATABASE_ID,
@@ -31,16 +31,41 @@ export const signIn = async ({ email, password } : signInProps) => {
 export const signUp = async (userData: SignUpParams) => {
     const { email, password, firstName, lastName } = userData;
 
+    let newUserAccount 
     try {
-        const { account } = await createAdminClient();
+        const { account, database } = await createAdminClient();
 
-        const newUserAccount = await account.create(
+        newUserAccount = await account.create(
             ID.unique(),
             email,
             password,
             `${firstName} ${lastName}`    
         );
 
+        if(!newUserAccount) throw new Error('Error creaing user')
+
+        const dwollaCustomerUrl = await createDwollaCustomer({
+            ...userData,
+            type: 'personal'
+        })
+
+        if (!dwollaCustomerUrl) throw new Error('Error creating Dwolla custoemr')
+        
+        const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
+
+        const newUser = await database.createDocument(
+            DATABASE_ID!,
+            USER_COLLECTION_ID!,
+            ID.unique(),
+            {
+                ...userData,
+                userId: newUserAccount.$id,
+                dwollaCustomerId,
+                dwollaCustomerUrl,
+
+            }
+        )
+        
         const session = await account.createEmailPasswordSession(email, password);
 
         cookies().set("appwrite-session", session.secret, {
@@ -130,7 +155,7 @@ export const createBankAccount = async({
         )
 
         return parseStringify(bankAccount);
-        
+
     } catch (error) {
         
     }
