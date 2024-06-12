@@ -3,7 +3,7 @@
 import { ID } from "node-appwrite"
 import { createAdminClient, createSessionClient } from "../appwrite"
 import { cookies } from "next/headers"
-import { encryptId, parseStringify } from "../utils"
+import { encryptId, extractCustomerIdFromUrl, parseStringify } from "../utils"
 import { CountryCode, ProcessorTokenCreateRequest, ProcessorTokenCreateRequestProcessorEnum, Products } from "plaid"
 import { plaidClient } from "@/lib/plaid"
 import { AwardIcon, Car } from "lucide-react"
@@ -28,8 +28,8 @@ export const signIn = async ({ email, password } : signInProps) => {
     }
 }
 
-export const signUp = async (userData: SignUpParams) => {
-    const { email, password, firstName, lastName } = userData;
+export const signUp = async ({ password, ...userData }: SignUpParams) => {
+    const { email, firstName, lastName } = userData;
 
     let newUserAccount 
     try {
@@ -42,14 +42,14 @@ export const signUp = async (userData: SignUpParams) => {
             `${firstName} ${lastName}`    
         );
 
-        if(!newUserAccount) throw new Error('Error creaing user')
+        if(!newUserAccount) throw new Error('Error creating user')
 
         const dwollaCustomerUrl = await createDwollaCustomer({
             ...userData,
             type: 'personal'
         })
 
-        if (!dwollaCustomerUrl) throw new Error('Error creating Dwolla custoemr')
+        if (!dwollaCustomerUrl) throw new Error('Error creating Dwolla customer')
         
         const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
 
@@ -113,7 +113,7 @@ export const createLinkToken = async (user: User) => {
             user: {
                 client_user_id: user.$id
             },
-            client_name: user.name,
+            client_name: `${user.firstName} ${user.lastName}`,
             products: ['auth'] as Products[],
             
             language: 'en',
