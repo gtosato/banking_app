@@ -5,14 +5,15 @@ import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
 import React from 'react'
 
-const Home = async () => {
+const Home = async ({ searchParams: { id, page }}: SearchParamProps) => {
 
   const loggedIn = await getLoggedInUser()
   const accounts = await getAccounts({ userId: loggedIn.$id})
 
   if (!accounts) return
 
-  const appwriteItemId = (id as string) || accounts?.data[0]?.appwriteItemId
+  const accountsData = accounts?.data
+  const appwriteItemId = (id as string) || accountsData.appwriteItemId
 
   const account = await getAccount({ appwriteItemId })
   
@@ -30,15 +31,15 @@ const Home = async () => {
           />
         </header>
         <TotalBalanceBox
-          accounts={[]}
-          totalBanks={1}
-          totalCurrentBalance={1250.35}
+          accounts={[accountsData]}
+          totalBanks={accounts?.totalBanks}
+          totalCurrentBalance={accounts?.totalCurrentBalance}
         />
       </div>
       <RightSidebar
         user={loggedIn}
-        transactions={[]}
-        banks={[{ currentBalance: 123.50 }, { currentBalance: 500.00}]}
+        transactions={accounts?.transactions}
+        banks={accountsData?.slice(0,2)}
       />
     </section>
   )
