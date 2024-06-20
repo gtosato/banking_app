@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table"
 
 
-const TransactionTable = () => {
+const TransactionsTable = () => {
   return (
     <Table>
         <TableCaption>A list of your recent invoices.</TableCaption>
@@ -33,4 +33,4 @@ const TransactionTable = () => {
   )
 }
 
-export default TransactionTable
+export default TransactionsTable
