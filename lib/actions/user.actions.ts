@@ -99,7 +99,7 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
             secure: true,
         });
 
-        return parseStringify(newUserAccount)
+        return parseStringify(newUser)
 
     } catch (error) {
         console.error('Error', error)
@@ -160,7 +160,7 @@ export const createBankAccount = async({
     accountId,
     accessToken,
     fundingSourceUrl,
-    sharableId,
+    shareableId,
 
 } : createBankAccountProps) => {
     try {
@@ -176,7 +176,7 @@ export const createBankAccount = async({
                 accountId,
                 accessToken,
                 fundingSourceUrl,
-                sharableId,
+                shareableId,
             }
         )
 
@@ -234,7 +234,7 @@ export const exchangePublicToken = async ({
             accountId: accountData.account_id,
             accessToken,
             fundingSourceUrl,
-            sharableId: encryptId(accountData.account_id),
+            shareableId: encryptId(accountData.account_id),
         })
 
         // Revalidate the path to reflect the changes
