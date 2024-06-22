@@ -9,6 +9,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+This project uses the following technologies:
+Sentry - Transaction Manager
+Plaid - Used to securely connect bank accounts to applications and provide real-time data
+Appwrite - Database with authentication to store user and banking information
+Dwolla - Payment processor to connect banking information.
+
 First, run the development server:
 
 ```bash
