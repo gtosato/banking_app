@@ -45,7 +45,7 @@ const RecentTransactions = ({
                           appwriteItemId={appwriteItemId}
                           type="full"
                       />
-                      <TransactionsTable transactions={transactions} />
+                  <TransactionsTable transactions={transactions} page={1} />
                       </TabsContent>
                       
               ))}
