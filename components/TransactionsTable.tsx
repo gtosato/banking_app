@@ -70,7 +70,7 @@ const TransactionsTable = ({ transactions }: TransactionHistoryTableProps) => {
               <TableCell className="min-w-32 pl-2 pr-10">
                 {formatDateTime(new Date(t.date)).dateTime}
               </TableCell>
-              <TableCell className="pl-2 pr-10 cappitalize min-w-24">
+              <TableCell className="pl-2 pr-10 capitalize min-w-24">
                 {t.paymentChannel}
               </TableCell>
               <TableCell className="pl-2 pr-10 max-md:hidden">
