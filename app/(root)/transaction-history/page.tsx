@@ -26,7 +26,7 @@ const TransactionHistory = async ({ searchParams: {id, page}}:SearchParamProps) 
         />
       </div>
       <div className='space-y-6'>
-        <div className='"transactions-account'>
+        <div className='transactions-account'>
           <div className='flex flex-col gap-2'>
             <h2 className='text-18 font-bold text-white'>{account?.data.name}</h2>
             <p className='text-14 text-blue-25'>
