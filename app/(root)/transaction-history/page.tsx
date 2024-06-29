@@ -46,7 +46,7 @@ const TransactionHistory = async ({ searchParams: {id, page}}:SearchParamProps) 
           </div>
         </div>
         <section className='flex w-full flex-col gap-6'>
-          <TransactionsTable transactions={account?.transaction} />
+          <TransactionsTable transactions={account?.transactions} />
         </section>
       </div>
     </div>
